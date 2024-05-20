@@ -31,13 +31,16 @@ public class Compressor {
                     encodedTextBuilder.append(code).append(" ");
                     code++;
                 }
+                encodedTextBuilder.append(System.lineSeparator());
             }
-            String encodedText = encodedTextBuilder.toString();
-            encodedText = encodedText.trim();
+            reader.close();
+
+            String encodedText = encodedTextBuilder.toString().trim();
 
             EncodedDataModel encodedDataModel = new EncodedDataModel(encodedText, encodedMap);
             byte[] serializedData = serializeObjectToByteArray(encodedDataModel);
             writeSerializedDataToFile(serializedData, outputFilePath);
+
         } catch (IOException e) {
             System.err.println("Ooops, hit an exception! => " + e.getLocalizedMessage() + "\n");
             throw new RuntimeException(e);

@@ -1,7 +1,6 @@
 package basic.compression;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Decompressor {
@@ -20,17 +19,20 @@ public class Decompressor {
             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath));
 
             EncodedDataModel encodedData = (EncodedDataModel) objectInputStream.readObject();
+            objectInputStream.close();
 
-            HashMap <String, Integer> encodedMap = encodedData.getEncodedMap();
-            HashMap <Integer, String> codeToWordMap = swapHashMap(encodedMap);
+            HashMap<String, Integer> encodedMap = encodedData.getEncodedMap();
+            HashMap<Integer, String> codeToWordMap = swapHashMap(encodedMap);
 
             String encodedText = encodedData.getEncodedText();
-            String[] encodedTextArr = encodedText.split(" ");
+            String[] encodedTextArr = encodedText.split("\\s+");
             StringBuilder decompressedSb = new StringBuilder();
-            for (String number: encodedTextArr) {
-                Integer code = Integer.parseInt(number);
-                String word = codeToWordMap.get(code);
-                decompressedSb.append(word).append(" ");
+            for (String number : encodedTextArr) {
+                if (!number.isEmpty()) {
+                    Integer code = Integer.parseInt(number);
+                    String word = codeToWordMap.get(code);
+                    decompressedSb.append(word).append(" ");
+                }
             }
 
             String decompressedStr = decompressedSb.toString().trim();
