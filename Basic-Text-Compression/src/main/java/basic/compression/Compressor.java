@@ -1,7 +1,10 @@
 package basic.compression;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Compressor {
     /**
@@ -19,25 +22,27 @@ public class Compressor {
             String line;
             int code = 0;
             HashMap<String, Integer> encodedMap = new HashMap<>();
-            StringBuilder encodedTextBuilder = new StringBuilder();
+            List<String> encodedTextList = new ArrayList<>();
 
             while((line = reader.readLine()) != null) {
                 String[] words = line.split("\\s");
                 for (String word: words) {
-                    word = word.trim();
                     if (!encodedMap.containsKey(word)) {
                         encodedMap.put(word, code);
+                        encodedTextList.add(Integer.toString(code));
+                        code++;
+                    } else {
+                        int existingCode = encodedMap.get(word);
+                        encodedTextList.add(Integer.toString(existingCode));
                     }
-                    encodedTextBuilder.append(code).append(" ");
-                    code++;
                 }
-                encodedTextBuilder.append(System.lineSeparator());
+                encodedTextList.add(System.lineSeparator());
             }
+            // Remove one extra lineSeparator
+            encodedTextList.removeLast();
             reader.close();
 
-            String encodedText = encodedTextBuilder.toString().trim();
-
-            EncodedDataModel encodedDataModel = new EncodedDataModel(encodedText, encodedMap);
+            EncodedDataModel encodedDataModel = new EncodedDataModel(encodedTextList, encodedMap);
             byte[] serializedData = serializeObjectToByteArray(encodedDataModel);
             writeSerializedDataToFile(serializedData, outputFilePath);
 

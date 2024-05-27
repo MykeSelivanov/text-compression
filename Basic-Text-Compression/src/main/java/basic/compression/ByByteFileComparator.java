@@ -5,9 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ByByteFileComparator {
-    public void test() {
-
-    }
     public boolean compareFilesByteByByte(String file1Path, String file2Path) throws IOException {
         try (FileInputStream fis1 = new FileInputStream(file1Path);
              FileInputStream fis2 = new FileInputStream(file2Path)) {

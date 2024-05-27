@@ -2,37 +2,38 @@ package basic.compression;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 
 public class EncodedDataModel implements Serializable {
-    private String encodedText;
-    private HashMap<String, Integer> encodedMap;
+    private List<String> encodedText;
+    private HashMap<String, Integer> wordToCode;
 
-    public EncodedDataModel(String encodedText, HashMap<String, Integer> encodedMap) {
+    public EncodedDataModel(List<String> encodedText, HashMap<String, Integer> wordToCode) {
         this.encodedText = encodedText;
-        this.encodedMap = encodedMap;
+        this.wordToCode = wordToCode;
     }
 
-    public String getEncodedText() {
+    public List<String> getEncodedText() {
         return encodedText;
     }
 
-    public void setEncodedText(String encodedText) {
+    public void setEncodedText(List<String> encodedText) {
         this.encodedText = encodedText;
     }
 
-    public HashMap<String, Integer> getEncodedMap() {
-        return encodedMap;
+    public HashMap<String, Integer> getWordToCode() {
+        return wordToCode;
     }
 
-    public void setEncodedMap(HashMap<String, Integer> encodedMap) {
-        this.encodedMap = encodedMap;
+    public void setWordToCode(HashMap<String, Integer> wordToCode) {
+        this.wordToCode = wordToCode;
     }
 
     @Override
     public String toString() {
         return "EncodedDataModel{" +
                 "encodedText='" + encodedText + '\'' +
-                ", encodedMap=" + encodedMap +
+                ", encodedMap=" + wordToCode +
                 '}';
     }
 }

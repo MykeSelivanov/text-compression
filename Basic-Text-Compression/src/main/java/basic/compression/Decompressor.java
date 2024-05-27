@@ -1,7 +1,9 @@
 package basic.compression;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Decompressor {
     /**
@@ -21,20 +23,26 @@ public class Decompressor {
             EncodedDataModel encodedData = (EncodedDataModel) objectInputStream.readObject();
             objectInputStream.close();
 
-            HashMap<String, Integer> encodedMap = encodedData.getEncodedMap();
-            HashMap<Integer, String> codeToWordMap = swapHashMap(encodedMap);
+            HashMap<String, Integer> encodedMap = encodedData.getWordToCode();
+            HashMap<Integer, String> codeToWord = swapHashMap(encodedMap);
 
-            String encodedText = encodedData.getEncodedText();
-            String[] encodedTextArr = encodedText.split("\\s+");
+            List<String> encodedText = encodedData.getEncodedText();
             StringBuilder decompressedSb = new StringBuilder();
-            for (String number : encodedTextArr) {
-                if (!number.isEmpty()) {
-                    Integer code = Integer.parseInt(number);
-                    String word = codeToWordMap.get(code);
+            for (String encodedWord : encodedText) {
+                if (encodedWord.equals(System.lineSeparator())) {
+                    String tempStr = decompressedSb.toString().trim();
+                    decompressedSb = new StringBuilder(tempStr);
+                    decompressedSb.append(System.lineSeparator());
+                    continue;
+                }
+                if (!encodedWord.isEmpty()) {
+                    Integer code = Integer.parseInt(encodedWord);
+                    String word = codeToWord.get(code);
                     decompressedSb.append(word).append(" ");
                 }
             }
 
+            // Remove one extra space
             String decompressedStr = decompressedSb.toString().trim();
             writer.write(decompressedStr);
             writer.close();
